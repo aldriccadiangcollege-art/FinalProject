@@ -1,5 +1,5 @@
 package com.barangay.ui;
 
-public class Main {
+public class ui {
     
 }
