@@ -1,9 +1,9 @@
 package com.barangay.Main;
-
 interface Resident{
-    public void getName();
+    public void getResidentName();
 }
 
+//name storage
 class residentName{
     private String firstName;
     private String lastName;
@@ -33,4 +33,13 @@ class residentName{
         this.lastName = lastName;
     }
 
+
+    
 }
+
+interface residentBirthday{
+    public void getResidentBirthday();
+
+}
+
+
