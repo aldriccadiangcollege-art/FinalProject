@@ -1,4 +1,7 @@
 package com.barangay.Main;
+
+import java.time.LocalDate;
+
 interface Resident{
     public void getResidentName();
 }
@@ -42,4 +45,6 @@ interface residentBirthday{
 
 }
 
-
+class residentBirthDate{
+    private LocalDate birthDate;
+}
