@@ -40,11 +40,38 @@ class residentName{
     
 }
 
-interface residentBirthday{
-    public void getResidentBirthday();
+interface Birthday{
+    java.time.LocalDate getResidentBirthday();
 
 }
 
 class residentBirthDate{
     private LocalDate birthDate;
+
+    public residentBirthDate(LocalDate birthDate){
+        this.birthDate = birthDate;
+    }
+
+    public LocalDate getResidentBirthdate(){
+        return birthDate;
+    }
+
+}
+
+class residentBDate implements Birthday{
+    private residentBirthDate residentBirthDate;
+
+    public residentBDate(residentBirthDate residentBirthDate){
+        this.residentBirthDate = residentBirthDate;
+    }
+
+    @Override
+    public LocalDate getResidentBirthday(){
+        return residentBirthDate.getResidentBirthdate();
+    }
+
+    public residentBirthDate getResidentBirthDate(){
+        return residentBirthDate;
+    }
+
 }
