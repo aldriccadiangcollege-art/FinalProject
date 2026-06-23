@@ -75,3 +75,29 @@ class residentBDate implements Birthday{
     }
 
 }
+
+
+interface ResidentGender {
+    String getResidentGender();
+}
+
+class Male implements ResidentGender {
+    @Override
+    public String getResidentGender() {
+        return "Male";
+    }
+}
+
+class Female implements ResidentGender {
+    @Override
+    public String getResidentGender() {
+        return "Female";
+    }
+}
+
+class PreferNotToSay implements ResidentGender {
+    @Override
+    public String getResidentGender() {
+        return "Prefer Not To Say";
+    }
+}
