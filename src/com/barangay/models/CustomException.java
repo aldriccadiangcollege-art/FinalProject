@@ -1,4 +1,4 @@
-package com.barangay.ui;
+package com.barangay.models;
 
 public class CustomException extends RuntimeException {
     public CustomException(String message) {
