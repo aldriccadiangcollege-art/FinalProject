@@ -1,4 +1,4 @@
-package com.barangay.Main;
+package com.barangay.models;
 
 import java.time.LocalDate;
 
