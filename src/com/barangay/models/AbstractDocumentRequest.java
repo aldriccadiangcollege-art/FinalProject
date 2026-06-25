@@ -1,6 +1,5 @@
 package com.barangay.models;
 
-import com.barangay.ui.CustomException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -26,7 +25,7 @@ public abstract class AbstractDocumentRequest implements DocumentRequest, Identi
 
     public void setRequestId(String requestId) {
         if (requestId == null || requestId.trim().isEmpty()) {
-            throw new CustomException("Request ID cannot be empty.");
+            throw new InvalidInputException("Request ID cannot be empty.");
         }
         this.requestId = requestId.trim();
     }
@@ -37,7 +36,7 @@ public abstract class AbstractDocumentRequest implements DocumentRequest, Identi
 
     public void setResident(ResidentRecord resident) {
         if (resident == null) {
-            throw new CustomException("Resident cannot be null.");
+            throw new InvalidInputException("Resident cannot be null.");
         }
         this.resident = resident;
     }
@@ -48,7 +47,7 @@ public abstract class AbstractDocumentRequest implements DocumentRequest, Identi
 
     public void setPurpose(String purpose) {
         if (purpose == null || purpose.trim().isEmpty()) {
-            throw new CustomException("Purpose cannot be empty.");
+            throw new InvalidInputException("Purpose cannot be empty.");
         }
         this.purpose = purpose.trim();
     }
@@ -59,7 +58,7 @@ public abstract class AbstractDocumentRequest implements DocumentRequest, Identi
 
     public void setStatus(RequestStatus status) {
         if (status == null) {
-            throw new CustomException("Status cannot be null.");
+            throw new InvalidInputException("Status cannot be null.");
         }
         this.status = status;
     }

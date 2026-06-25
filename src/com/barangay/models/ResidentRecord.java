@@ -1,6 +1,5 @@
 package com.barangay.models;
 
-import com.barangay.ui.CustomException;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -29,7 +28,7 @@ public class ResidentRecord {
 
     public void setResidentId(String residentId) {
         if (residentId == null || residentId.trim().isEmpty()) {
-            throw new CustomException("Resident ID cannot be empty.");
+            throw new InvalidInputException("Resident ID cannot be empty.");
         }
         this.residentId = residentId.trim();
     }
@@ -40,7 +39,7 @@ public class ResidentRecord {
 
     public void setFirstName(String firstName) {
         if (firstName == null || firstName.trim().isEmpty()) {
-            throw new CustomException("First name cannot be empty.");
+            throw new InvalidInputException("First name cannot be empty.");
         }
         this.firstName = firstName.trim();
     }
@@ -51,7 +50,7 @@ public class ResidentRecord {
 
     public void setLastName(String lastName) {
         if (lastName == null || lastName.trim().isEmpty()) {
-            throw new CustomException("Last name cannot be empty.");
+            throw new InvalidInputException("Last name cannot be empty.");
         }
         this.lastName = lastName.trim();
     }
@@ -62,7 +61,7 @@ public class ResidentRecord {
 
     public void setBirthDate(LocalDate birthDate) {
         if (birthDate == null) {
-            throw new CustomException("Birth date cannot be null.");
+            throw new InvalidInputException("Birth date cannot be null.");
         }
         this.birthDate = birthDate;
     }
@@ -73,7 +72,7 @@ public class ResidentRecord {
 
     public void setGender(String gender) {
         if (gender == null || gender.trim().isEmpty()) {
-            throw new CustomException("Gender cannot be empty.");
+            throw new InvalidInputException("Gender cannot be empty.");
         }
         this.gender = gender.trim();
     }
@@ -84,7 +83,7 @@ public class ResidentRecord {
 
     public void setAddress(String address) {
         if (address == null || address.trim().isEmpty()) {
-            throw new CustomException("Address cannot be empty.");
+            throw new InvalidInputException("Address cannot be empty.");
         }
         this.address = address.trim();
     }
