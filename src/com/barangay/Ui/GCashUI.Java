@@ -24,19 +24,24 @@ public class GCashUI {
             try {
                 int choice = Integer.parseInt(scanner.nextLine());
 
-                if (choice == 1) {
-                    System.out.println("You selected Option 1 - Establishing Account");
-                } else if (choice == 2) {
-                    System.out.println("You selected Option 2 - GCash Payment");
-                } else if (choice == 3) {
-                    System.out.println("You selected Option 3 - View Payment History");
-                } else if (choice == 4) {
-                    System.out.println("You selected Option 4 - Sorting Payment");
-                } else if (choice == 5) {
-                    System.out.println("Returning to Main Menu...");
-                    break;
-                } else {
-                    throw new InvalidInputException("Invalid choice! Please select 1, 2, 3, 4, or 5.");
+                switch (choice) {
+                    case 1:
+                        System.out.println("You selected Option 1 - Establishing Account");
+                        break;
+                    case 2:
+                        System.out.println("You selected Option 2 - GCash Payment");
+                        break;
+                    case 3:
+                        System.out.println("You selected Option 3 - View Payment History");
+                        break;
+                    case 4:
+                        System.out.println("You selected Option 4 - Sorting Payment");
+                        break;
+                    case 5:
+                        System.out.println("Returning to Main Menu...");
+                        return; // Exits the method and the loop
+                    default:
+                        throw new InvalidInputException("Invalid choice! Please select 1, 2, 3, 4, or 5.");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Error: Input must be a valid number!");
