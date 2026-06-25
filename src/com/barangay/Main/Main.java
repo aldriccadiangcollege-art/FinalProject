@@ -34,7 +34,7 @@ public class Main {
                     }
 
                     case 3 -> {
-                        System.out.println("\nOpening Document Request Dispatcher...");
+                        System.out.println("\n===== DOCUMENT MODULE =====");
                         documentRequestUI.launch();
                     }
 
