@@ -21,7 +21,7 @@ public class ResidentUI {
         residentBdate bDate = new residentBDate(birth);
 
         System.out.print("Gender (M/F/X): ");
-        String gender Input = sc.nextLine();
+        String genderInput = sc.nextLine();
         ResidentGender gender;
         switch (genderInput.toUpperCase()){
             case "M": gender = new Male(); break;
