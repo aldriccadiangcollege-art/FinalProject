@@ -6,15 +6,15 @@ import com.barangay.models.BarangayClearanceRequest;
 import com.barangay.models.CertificateOfIndigencyRequest;
 import com.barangay.models.CertificateOfResidencyRequest;
 import com.barangay.models.DocumentType;
+import com.barangay.models.InvalidInputException;
 import com.barangay.models.ResidentRecord;
-import com.barangay.ui.CustomException;
 
 public class RequestFactory {
 
     public AbstractDocumentRequest createRequest(String requestId, ResidentRecord resident,
                                                  DocumentType type, String purpose) {
         if (type == null) {
-            throw new CustomException("Document type cannot be null.");
+            throw new InvalidInputException("Document type cannot be null.");
         }
 
         return switch (type) {

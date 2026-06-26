@@ -2,10 +2,9 @@ package com.barangay.services;
 
 import com.barangay.models.AbstractDocumentRequest;
 import com.barangay.models.DocumentType;
+import com.barangay.models.InvalidInputException;
 import com.barangay.models.RequestStatus;
 import com.barangay.models.ResidentRecord;
-import com.barangay.ui.CustomException;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -64,7 +63,7 @@ public class DocumentRequestService {
 
     public List<AbstractDocumentRequest> searchByResidentName(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
-            throw new CustomException("Search keyword cannot be empty.");
+            throw new InvalidInputException("Search keyword cannot be empty.");
         }
         return searchEngine.searchByResidentName(requestRepository.getAll(), keyword.trim());
     }
@@ -79,7 +78,7 @@ public class DocumentRequestService {
 
     public void updateRequestStatus(String requestId, RequestStatus status) {
         AbstractDocumentRequest request = findById(requestId)
-                .orElseThrow(() -> new CustomException("Request ID not found."));
+                .orElseThrow(() -> new InvalidInputException("Request ID not found."));
 
         request.setStatus(status);
     }

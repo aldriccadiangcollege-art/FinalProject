@@ -2,9 +2,9 @@ package com.barangay.ui;
 
 import com.barangay.models.AbstractDocumentRequest;
 import com.barangay.models.DocumentType;
+import com.barangay.models.InvalidInputException;
 import com.barangay.models.RequestStatus;
 import com.barangay.services.DocumentRequestService;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
@@ -45,12 +45,12 @@ public class DocumentRequestUI {
                     case 6 -> displayRequests(requestService.sortByResidentName(), "REQUESTS SORTED BY RESIDENT NAME");
                     case 7 -> updateRequestStatus();
                     case 8 -> running = false;
-                    default -> throw new CustomException("Invalid menu choice.");
+                    default -> throw new InvalidInputException("Invalid menu choice.");
                 }
 
             } catch (NumberFormatException e) {
                 System.out.println("Error: Please enter a valid number only.");
-            } catch (CustomException e) {
+            } catch (InvalidInputException e) {
                 System.out.println("Error: " + e.getMessage());
             } catch (Exception e) {
                 System.out.println("Unexpected error: " + e.getMessage());
@@ -83,7 +83,7 @@ public class DocumentRequestUI {
         try {
             birthDate = LocalDate.of(year, month, day);
         } catch (Exception e) {
-            throw new CustomException("Invalid birth date.");
+            throw new InvalidInputException("Invalid birth date.");
         }
 
         System.out.print("Gender: ");
@@ -127,7 +127,7 @@ public class DocumentRequestUI {
             case 2 -> DocumentType.BARANGAY_CLEARANCE;
             case 3 -> DocumentType.CERTIFICATE_OF_RESIDENCY;
             case 4 -> DocumentType.CERTIFICATE_OF_INDIGENCY;
-            default -> throw new CustomException("Document type does not exist.");
+            default -> throw new InvalidInputException("Document type does not exist.");
         };
     }
 
@@ -155,7 +155,7 @@ public class DocumentRequestUI {
             case 1 -> RequestStatus.APPROVED;
             case 2 -> RequestStatus.REJECTED;
             case 3 -> RequestStatus.RELEASED;
-            default -> throw new CustomException("Invalid status.");
+            default -> throw new InvalidInputException("Invalid status.");
         };
 
         requestService.updateRequestStatus(requestId, status);
@@ -178,7 +178,7 @@ public class DocumentRequestUI {
 
     private String requireNonEmpty(String input, String errorMessage) {
         if (input == null || input.trim().isEmpty()) {
-            throw new CustomException(errorMessage);
+            throw new InvalidInputException(errorMessage);
         }
         return input.trim();
     }
@@ -187,7 +187,7 @@ public class DocumentRequestUI {
         try {
             return Integer.parseInt(input.trim());
         } catch (NumberFormatException e) {
-            throw new CustomException(errorMessage);
+            throw new InvalidInputException(errorMessage);
         }
     }
 }
