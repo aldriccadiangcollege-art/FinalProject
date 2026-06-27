@@ -1,50 +1,57 @@
 package com.barangay.ui;
 
 import com.barangay.models.*;
+import com.barangay.ui.ResidentUI.ResidentRegistration;
+import com.barangay.ui.ResidentUI.ResidentViewer;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-<<<<<<< HEAD
-public class Resident {
-=======
 public class ResidentUI {
->>>>>>> 404cd084c09f157e270385cf819aadafb10f1e88
     private Scanner sc = new Scanner(System.in);
-
+   private final InputProvider inputProvider = new ConsoleInputProvider();
+    private final ResidentRegistration registration = new ResidentRegistration(inputProvider);
+    private final ResidentViewer viewer = new ResidentViewer();
     public void ResidentUIMenu(){
-         while (true) {
-            System.out.println("\n--- Residents ---");
-            System.out.println("1. Add resident");
-            System.out.println("2. Find Resident");
-            System.out.println("3. Exit");
-            System.out.print("Please select an option: ");
 
-            try {
-                int choice = Integer.parseInt(sc.nextLine());
 
-                switch (choice) {
-                    case 1:
-                        System.out.println("You selected Option 1 - Add Resident");
-                        break;
-                    case 2:
-                        System.out.println("You selected Option 2 - Find Resident");
-                        break;
-                    case 3:
-                        System.out.println("Returning to Main Menu...");
-                        return; // Exits the method and the loop
-                    default:
-                        throw new InvalidInputException("Invalid choice! Please select 1, 2, 3, 4, or 5.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Error: Input must be a valid number!");
-            } catch (InvalidInputException e) {
-                System.out.println("Error: " + e.getMessage());
+    while (true) {
+        System.out.println("\n--- Residents ---");
+        System.out.println("1. Add resident");
+        System.out.println("2. Find Resident");
+        System.out.println("3. Exit");
+        System.out.print("Please select an option: ");
+
+        try {
+            int choice = Integer.parseInt(sc.nextLine());
+
+            switch (choice) {
+                case 1:
+                    registration.registerResident();
+                    break;
+                case 2:
+                    List<Resident> currentResidents = registration.getResidents();
+                    if (currentResidents.isEmpty()) {
+                        System.out.println("No residents found.");
+                    } else {
+                        viewer.viewNames(currentResidents);
+                    }
+                    break;
+                case 3:
+                    System.out.println("Returning to Main Menu...");
+                    return;
+                default:
+                    throw new InvalidInputException("Invalid choice! Please select 1, 2, or 3.");
             }
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Input must be a valid number!");
+        } catch (InvalidInputException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
+}
 
 
     class Resident {
@@ -73,20 +80,12 @@ public class ResidentUI {
         }
     }
 
-<<<<<<< HEAD
-    // --- DIP + ISP: InputProvider interface abstracts input source ---
-=======
 
->>>>>>> 404cd084c09f157e270385cf819aadafb10f1e88
     interface InputProvider {
         String getInput(String prompt);
     }
 
-<<<<<<< HEAD
-    // --- Concrete implementation for console input ---
-=======
 
->>>>>>> 404cd084c09f157e270385cf819aadafb10f1e88
     class ConsoleInputProvider implements InputProvider {
         private Scanner sc = new Scanner(System.in);
 
@@ -97,16 +96,12 @@ public class ResidentUI {
         }
     }
 
-<<<<<<< HEAD
-    // --- SRP: Handles resident registration logic ---
-=======
 
->>>>>>> 404cd084c09f157e270385cf819aadafb10f1e88
-    class ResidentRegistrar {
+    class ResidentRegistration {
         private InputProvider inputProvider;
         private List<Resident> residents = new ArrayList<>();
 
-        public ResidentRegistrar(InputProvider inputProvider) {
+        public ResidentRegistration(InputProvider inputProvider) {
             this.inputProvider = inputProvider;
         }
 
@@ -135,11 +130,7 @@ public class ResidentUI {
         }
     }
 
-<<<<<<< HEAD
-    // --- SRP: Handles viewing residents ---
-=======
 
->>>>>>> 404cd084c09f157e270385cf819aadafb10f1e88
     class ResidentViewer {
         public void viewNames(List<Resident> residents) {
             System.out.println("\nAll registered names:");
