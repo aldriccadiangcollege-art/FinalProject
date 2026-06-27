@@ -8,6 +8,10 @@ import java.time.LocalDate;
 
 public class ResidentUI {
     private Scanner sc = new Scanner(System.in);
+
+    public void ResidentUIMenu{
+
+    }
     //registration
     public Resident registerResident(){
         System.out.println("First Name: ");
