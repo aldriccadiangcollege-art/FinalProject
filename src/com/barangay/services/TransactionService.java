@@ -16,9 +16,19 @@ public class TransactionService {
         history.add(new Transfer(ref, from, to, amt, java.time.LocalDateTime.now()));
     }
 
-    public List<Transfer> getSortedHistory() {
-        return history.stream()
-                .sorted(Comparator.comparing(transfer -> transfer.from().name()))
+    public List<Account> searchAccountsByName(String nameQuery) {
+        return accounts.stream()
+                .filter(a -> a.name().toLowerCase().contains(nameQuery.toLowerCase()))
                 .collect(Collectors.toList());
     }
+
+    // --- REPLACEMENT STARTS HERE ---
+    public List<Transfer> getSortedHistory() {
+        return history.stream()
+                // Change: Sort by the 'date' field in the Transfer model
+                // .reversed() ensures the newest transaction appears at the top
+                .sorted(Comparator.comparing(Transfer::date).reversed())
+                .collect(Collectors.toList());
+    }
+    // --- REPLACEMENT ENDS HERE ---
 }
