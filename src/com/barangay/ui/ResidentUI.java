@@ -9,9 +9,39 @@ import java.time.LocalDate;
 public class ResidentUI {
     private Scanner sc = new Scanner(System.in);
 
-    public void ResidentUIMenu{
+    public void ResidentUIMenu(){
+         while (true) {
+            System.out.println("\n--- Residents ---");
+            System.out.println("1. Add resident");
+            System.out.println("2. Find Resident");
+            System.out.println("3. Exit");
+            System.out.print("Please select an option: ");
 
+            try {
+                int choice = Integer.parseInt(scanner.nextLine());
+
+                switch (choice) {
+                    case 1:
+                        System.out.println("You selected Option 1 - Add Resident");
+                        break;
+                    case 2:
+                        System.out.println("You selected Option 2 - Find Resident");
+                        break;
+                    case 3:
+                        System.out.println("Returning to Main Menu...");
+                        return; // Exits the method and the loop
+                    default:
+                        throw new InvalidInputException("Invalid choice! Please select 1, 2, 3, 4, or 5.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Input must be a valid number!");
+            } catch (InvalidInputException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
     }
+
+    
     //registration
     public Resident registerResident(){
         System.out.println("First Name: ");
