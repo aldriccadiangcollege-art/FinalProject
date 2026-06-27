@@ -40,7 +40,7 @@ public class Payment {
 
     private void displayHeader() {
         System.out.println("\n=============================================");
-        System.out.println("      GCASH TRANSACTION MANAGEMENT SYSTEM    ");
+        System.out.println("           Payment Simulation System           ");
         System.out.println("=============================================");
         System.out.println(" 1. [Register]       Create a new user account");
         System.out.println(" 2. [Transfer]       Send money between accounts");
