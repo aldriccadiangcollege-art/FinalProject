@@ -16,9 +16,15 @@ public class TransactionService {
         history.add(new Transfer(ref, from, to, amt, java.time.LocalDateTime.now()));
     }
 
+    public List<Account> getAccountsWithPaymentHistory() {
+        return accounts.stream()
+                .filter(a -> history.stream().anyMatch(t -> t.from().equals(a) || t.to().equals(a)))
+                .collect(Collectors.toList());
+    }
+
     public List<Transfer> getSortedHistory() {
         return history.stream()
-                .sorted(Comparator.comparing(transfer -> transfer.from().name()))
+                .sorted(Comparator.comparing(Transfer::date).reversed())
                 .collect(Collectors.toList());
     }
 }

@@ -3,6 +3,7 @@ package com.barangay.Main;
 import com.barangay.models.InvalidInputException;
 import com.barangay.ui.DocumentRequest;
 import com.barangay.ui.Payment;
+import com.barangay.ui.ResidentUI;
 import java.util.Scanner;
 
 public class Main {
@@ -10,6 +11,8 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         DocumentRequest documentRequest = new DocumentRequest(scanner);
         Payment payment = new Payment(scanner);
+        ResidentUI ui = new ResidentUI();
+
 
         while (true) {
             System.out.println("\n===== BARANGAY SYSTEM MAIN MENU =====");
@@ -28,10 +31,9 @@ public class Main {
 
     switch (choice) {
         case 1:
-
+            ui.ResidentUIMenu();
             break;
         case 2:
-
             payment.start();
             break;
         case 3:
