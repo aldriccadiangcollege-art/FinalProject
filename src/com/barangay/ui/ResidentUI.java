@@ -1,8 +1,6 @@
 package com.barangay.ui;
 
 import com.barangay.models.*;
-import com.barangay.ui.ResidentUI.ResidentRegistration;
-import com.barangay.ui.ResidentUI.ResidentViewer;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -11,49 +9,57 @@ import java.util.Scanner;
 
 public class ResidentUI {
     private Scanner sc = new Scanner(System.in);
-   private final InputProvider inputProvider = new ConsoleInputProvider();
-    private final ResidentRegistration registration = new ResidentRegistration(inputProvider);
-    private final ResidentViewer viewer = new ResidentViewer();
+    InputProvider inputProvider = prompt ->{
+        System.out.print(prompt);
+        return sc.nextLine();
+    }; 
+    ResidentRegistration r = new ResidentRegistration(inputProvider);
+    ResidentViewer v = new ResidentViewer();
+    SearchResident s = new SearchResident();
+
     public void ResidentUIMenu(){
+         while (true) {
+            System.out.println("\n--- Residents ---");
+            System.out.println("1. Add Resident");
+            System.out.println("2. View All Residents");
+            System.out.println("3. Find Resident");
+            System.out.println("4. Exit");
+            System.out.print("Please select an option: ");
 
+            try {
+                int choice = Integer.parseInt(sc.nextLine());
 
-    while (true) {
-        System.out.println("\n--- Residents ---");
-        System.out.println("1. Add resident");
-        System.out.println("2. Find Resident");
-        System.out.println("3. Exit");
-        System.out.print("Please select an option: ");
+                switch (choice) {
+                    case 1:
+                        r.registerResident();
+                        break;
+                    case 2:
+                        v.viewNames(r.getResidents());
+                        break;
+                    case 3:
+                        String firstName = inputProvider.getInput("First Name: ");
+                        String lastName = inputProvider.getInput("Last Name: ");
+                        Resident found = s.searchByname(r.getResidents(), firstName, lastName);
+                        if (found != null){
+                            System.out.println("Resident found: " + found.getFullName());}
+                            else{
+                                System.out.println("Resident not found!");
+                            }
+                            break;
+                        case 4:
+                            System.out.println("Returning to Main Menu...");
+                        return;
+                    default:
+                        throw new InvalidInputException("Invalid choice!");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Input must be a valid number!");
 
-        try {
-            int choice = Integer.parseInt(sc.nextLine());
-
-            switch (choice) {
-                case 1:
-                    registration.registerResident();
-                    break;
-                case 2:
-                    List<Resident> currentResidents = registration.getResidents();
-                    if (currentResidents.isEmpty()) {
-                        System.out.println("No residents found.");
-                    } else {
-                        viewer.viewNames(currentResidents);
-                    }
-                    break;
-                case 3:
-                    System.out.println("Returning to Main Menu...");
-                    return;
-                default:
-                    throw new InvalidInputException("Invalid choice! Please select 1, 2, or 3.");
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Error: Input must be a valid number!");
-        } catch (InvalidInputException e) {
-            System.out.println("Error: " + e.getMessage());
         }
     }
-}
 
-
+//resident
     class Resident {
         private String firstName;
         private String lastName;
@@ -85,18 +91,8 @@ public class ResidentUI {
         String getInput(String prompt);
     }
 
-
-    class ConsoleInputProvider implements InputProvider {
-        private Scanner sc = new Scanner(System.in);
-
-        @Override
-        public String getInput(String prompt) {
-            System.out.print(prompt);
-            return sc.nextLine();
-        }
-    }
-
-
+    
+//For Registration
     class ResidentRegistration {
         private InputProvider inputProvider;
         private List<Resident> residents = new ArrayList<>();
@@ -130,7 +126,7 @@ public class ResidentUI {
         }
     }
 
-
+//For Viewing All
     class ResidentViewer {
         public void viewNames(List<Resident> residents) {
             System.out.println("\nAll registered names:");
@@ -140,6 +136,25 @@ public class ResidentUI {
         }
     }
 
+//For Searching
+    class SearchResident{
+        public Resident searchByname(List<Resident> residents, String firstname, String lastName){
+            for (Resident r : residents){
+                if(r.getFullName().equalsIgnoreCase(firstname + " " + lastName)){
+                    return r;
+                }
+            }
+            return null;
+        }
+    }
+
+public class Main{
+    public static void main(String[] args) {
+        ResidentUI ui = new ResidentUI();
+
+        ui.ResidentUIMenu();
+    }
+}
 
 
 
