@@ -23,7 +23,7 @@ public class Payment {
                     case 1 -> registerAccount();
                     case 2 -> processTransfer();
                     case 3 -> viewHistory();
-                    case 4 -> searchAccount(); // New Option
+                    case 4 -> searchAccount();
                     case 5 -> {
                         System.out.println("\n>> Shutting down system. Goodbye!");
                         return;
@@ -32,10 +32,8 @@ public class Payment {
                 }
             } catch (NumberFormatException e) {
                 System.out.println(">> [!] Error: Please enter a valid number (1-5).");
-            } catch (InvalidInputException e) {
+            } catch (InvalidInputException | PaymentProcessingException e) {
                 System.out.println(">> [!] System Error: " + e.getMessage());
-            } catch (PaymentProcessingException e) {
-                System.out.println(">> [!] Payment Error: " + e.getMessage());
             }
         }
     }
@@ -47,7 +45,7 @@ public class Payment {
         System.out.println(" 1. [Register]       Create a new user account");
         System.out.println(" 2. [Transfer]       Send money between accounts");
         System.out.println(" 3. [History]        View sorted transaction logs");
-        System.out.println(" 4. [Search]         Search for an account by name");
+        System.out.println(" 4. [Search]         Search accounts with payment history");
         System.out.println(" 5. [Exit]           Close application");
         System.out.print(" Select operation: ");
     }
@@ -93,26 +91,16 @@ public class Payment {
     }
 
     private void viewHistory() {
-        System.out.println("\n--- Transaction Log (Sorted by Sender Name) ---");
+        System.out.println("\n--- Transaction Log (Sorted by Date) ---");
         List<com.barangay.models.Transfer> logs = service.getSortedHistory();
-        
-        if (logs.isEmpty()) {
-            System.out.println("No records found.");
-        } else {
-            logs.forEach(System.out::println);
-        }
+        if (logs.isEmpty()) System.out.println("No records found.");
+        else logs.forEach(System.out::println);
     }
 
     private void searchAccount() {
-        System.out.print("\nEnter name to search: ");
-        String query = scanner.nextLine();
-        var results = service.searchAccountsByName(query);
-        
-        if (results.isEmpty()) {
-            System.out.println(">> No accounts found matching: " + query);
-        } else {
-            System.out.println(">> Search Results:");
-            results.forEach(System.out::println);
-        }
+        System.out.println("\n--- Searching accounts with transaction history ---");
+        var results = service.getAccountsWithPaymentHistory();
+        if (results.isEmpty()) System.out.println(">> No accounts with payment history found.");
+        else results.forEach(System.out::println);
     }
 }
