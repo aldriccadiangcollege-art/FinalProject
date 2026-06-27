@@ -7,23 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ResidentUI {
+public class Resident {
     private Scanner sc = new Scanner(System.in);
-    InputProvider inputProvider = prompt ->{
-        System.out.print(prompt);
-        return sc.nextLine();
-    }; 
-    ResidentRegistration r = new ResidentRegistration(inputProvider);
-    ResidentViewer v = new ResidentViewer();
-    SearchResident s = new SearchResident();
+
+    
 
     public void ResidentUIMenu(){
          while (true) {
             System.out.println("\n--- Residents ---");
-            System.out.println("1. Add Resident");
-            System.out.println("2. View All Residents");
-            System.out.println("3. Find Resident");
-            System.out.println("4. Exit");
+            System.out.println("1. Add resident");
+            System.out.println("2. Find Resident");
+            System.out.println("3. Exit");
             System.out.print("Please select an option: ");
 
             try {
@@ -31,35 +25,26 @@ public class ResidentUI {
 
                 switch (choice) {
                     case 1:
-                        r.registerResident();
+                        System.out.println("You selected Option 1 - Add Resident");
                         break;
                     case 2:
-                        v.viewNames(r.getResidents());
+                        System.out.println("You selected Option 2 - Find Resident");
                         break;
                     case 3:
-                        String firstName = inputProvider.getInput("First Name: ");
-                        String lastName = inputProvider.getInput("Last Name: ");
-                        Resident found = s.searchByname(r.getResidents(), firstName, lastName);
-                        if (found != null){
-                            System.out.println("Resident found: " + found.getFullName());}
-                            else{
-                                System.out.println("Resident not found!");
-                            }
-                            break;
-                        case 4:
-                            System.out.println("Returning to Main Menu...");
-                        return;
+                        System.out.println("Returning to Main Menu...");
+                        return; // Exits the method and the loop
                     default:
-                        throw new InvalidInputException("Invalid choice!");
+                        throw new InvalidInputException("Invalid choice! Please select 1, 2, 3, 4, or 5.");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Error: Input must be a valid number!");
-
+            } catch (InvalidInputException e) {
+                System.out.println("Error: " + e.getMessage());
             }
         }
     }
 
-//resident
+
     class Resident {
         private String firstName;
         private String lastName;
@@ -86,18 +71,28 @@ public class ResidentUI {
         }
     }
 
-
+    // --- DIP + ISP: InputProvider interface abstracts input source ---
     interface InputProvider {
         String getInput(String prompt);
     }
 
-    
-//For Registration
-    class ResidentRegistration {
+    // --- Concrete implementation for console input ---
+    class ConsoleInputProvider implements InputProvider {
+        private Scanner sc = new Scanner(System.in);
+
+        @Override
+        public String getInput(String prompt) {
+            System.out.print(prompt);
+            return sc.nextLine();
+        }
+    }
+
+    // --- SRP: Handles resident registration logic ---
+    class ResidentRegistrar {
         private InputProvider inputProvider;
         private List<Resident> residents = new ArrayList<>();
 
-        public ResidentRegistration(InputProvider inputProvider) {
+        public ResidentRegistrar(InputProvider inputProvider) {
             this.inputProvider = inputProvider;
         }
 
@@ -107,7 +102,7 @@ public class ResidentUI {
 
             LocalDate birthdate;
             try {
-                birthdate = LocalDate.parse(inputProvider.getInput("Birthdate (DD-MM-YYYY): "));
+                birthdate = LocalDate.parse(inputProvider.getInput("Birthdate (YYYY-MM-DD): "));
             } catch (DateTimeParseException e) {
                 System.out.println("Invalid date format. Use YYYY-MM-DD.");
                 return;
@@ -126,7 +121,7 @@ public class ResidentUI {
         }
     }
 
-//For Viewing All
+    // --- SRP: Handles viewing residents ---
     class ResidentViewer {
         public void viewNames(List<Resident> residents) {
             System.out.println("\nAll registered names:");
@@ -136,25 +131,6 @@ public class ResidentUI {
         }
     }
 
-//For Searching
-    class SearchResident{
-        public Resident searchByname(List<Resident> residents, String firstname, String lastName){
-            for (Resident r : residents){
-                if(r.getFullName().equalsIgnoreCase(firstname + " " + lastName)){
-                    return r;
-                }
-            }
-            return null;
-        }
-    }
-
-public class Main{
-    public static void main(String[] args) {
-        ResidentUI ui = new ResidentUI();
-
-        ui.ResidentUIMenu();
-    }
-}
 
 
 
