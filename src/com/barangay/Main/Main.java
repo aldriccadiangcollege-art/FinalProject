@@ -1,8 +1,8 @@
 package com.barangay.Main;
 
-import com.barangay.models.InvalidInputException;//import the InvalidInputException class
+import com.barangay.models.InvalidInputException;
 import com.barangay.ui.DocumentRequestUI;
-import com.barangay.ui.GCashUI; // Import the GCashUI class
+import com.barangay.ui.GCashUI;
 import java.util.Scanner;
 
 public class Main {
@@ -11,12 +11,11 @@ public class Main {
         DocumentRequestUI documentRequestUI = new DocumentRequestUI(scanner);
         GCashUI gCashUI = new GCashUI(scanner);
 
-        // Main Menu Loop
         while (true) {
             System.out.println("\n===== BARANGAY SYSTEM MAIN MENU =====");
             System.out.println("1: Option 1 - Resident");
             System.out.println("2: Option 2 - Gcash");
-            System.out.println("3: Option 3 - ");
+            System.out.println("3: Option 3 - Document Request");
             System.out.println("4: Exit");
             System.out.print("Enter your choice: ");
 
@@ -46,13 +45,11 @@ public class Main {
                         System.out.println("You selected Option 1 - Resident");
                         break;
                     case 2:
-                        // Call the GCashUI menu
                         System.out.println("You selected Option 2 - Gcash");
-                        gCashUI.displayMenu();
+                        gCashUI.start();
                         break;
                     case 3:
                         System.out.println("You selected Option 3");
->>>>>>> 7da889bd5b7749a04432ff36d1984a3c21af73c4
                         documentRequestUI.launch();
                         break;
                     case 4:

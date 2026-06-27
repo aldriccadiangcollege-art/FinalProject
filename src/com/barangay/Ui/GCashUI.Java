@@ -1,53 +1,100 @@
 package com.barangay.ui;
 
-import com.barangay.models.InvalidInputException;
+import com.barangay.models.*;
+import com.barangay.services.TransactionService;
+import java.util.List;
 import java.util.Scanner;
 
 public class GCashUI {
-    private Scanner scanner;
+    private final Scanner scanner;
+    private final TransactionService service = new TransactionService();
 
-    // Constructor to pass the scanner from Main
-    public GCashUI(Scanner scanner) {
-        this.scanner = scanner;
-    }
+    public GCashUI(Scanner scanner) { this.scanner = scanner; }
 
-    public void displayMenu() {
+    public void start() {
         while (true) {
-            System.out.println("\n--- Welcome to GCash Payment System ---");
-            System.out.println("1. Establishing account");
-            System.out.println("2. GCash Payment");
-            System.out.println("3. View Payment");
-            System.out.println("4. Sorting Payment");
-            System.out.println("5. Exit");
-            System.out.print("Please select an option: ");
-
+            displayHeader();
             try {
-                int choice = Integer.parseInt(scanner.nextLine());
+                String input = scanner.nextLine();
+                int choice = Integer.parseInt(input);
 
                 switch (choice) {
-                    case 1:
-                        System.out.println("You selected Option 1 - Establishing Account");
-                        break;
-                    case 2:
-                        System.out.println("You selected Option 2 - GCash Payment");
-                        break;
-                    case 3:
-                        System.out.println("You selected Option 3 - View Payment History");
-                        break;
-                    case 4:
-                        System.out.println("You selected Option 4 - Sorting Payment");
-                        break;
-                    case 5:
-                        System.out.println("Returning to Main Menu...");
-                        return; // Exits the method and the loop
-                    default:
-                        throw new InvalidInputException("Invalid choice! Please select 1, 2, 3, 4, or 5.");
+                    case 1 -> registerAccount();
+                    case 2 -> processTransfer();
+                    case 3 -> viewHistory();
+                    case 4 -> {
+                        System.out.println("\n>> Shutting down system. Goodbye!");
+                        return;
+                    }
+                    default -> System.out.println(">> [!] Invalid option. Please select 1-4.");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Error: Input must be a valid number!");
+                System.out.println(">> [!] Error: Please enter a valid number (1-4).");
             } catch (InvalidInputException e) {
-                System.out.println("Error: " + e.getMessage());
+                System.out.println(">> [!] System Error: " + e.getMessage());
             }
         }
     }
-}
+
+    private void displayHeader() {
+        System.out.println("\n=============================================");
+        System.out.println("      GCASH TRANSACTION MANAGEMENT SYSTEM    ");
+        System.out.println("=============================================");
+        System.out.println(" 1. [Register]   Create a new user account");
+        System.out.println(" 2. [Transfer]   Send money between accounts");
+        System.out.println(" 3. [History]    View sorted transaction logs");
+        System.out.println(" 4. [Exit]       Close application");
+        System.out.print(" Select operation: ");
+    }
+
+    private void registerAccount() {
+        System.out.println("\n--- Registration ---");
+        System.out.print("Enter Numeric ID: ");
+        String id = scanner.nextLine();
+        if (!id.matches("\\d+")) throw new InvalidInputException("ID must be numbers only.");
+        
+        System.out.print("Enter Account Name: ");
+        String name = scanner.nextLine();
+        if (!name.matches("[a-zA-Z\\s]+")) throw new InvalidInputException("Name must be letters only.");
+        
+        service.addAccount(id, name);
+        System.out.println(">> Success: Account [" + name + "] registered.");
+    }
+
+ private void processTransfer() {
+        var accs = service.getAccounts();
+        if (accs.size() < 2) throw new InvalidInputException("Insufficient participants: Need at least 2 accounts.");
+
+        System.out.println("\n--- Active Participants ---");
+        accs.forEach(a -> System.out.println("Index [" + accs.indexOf(a) + "] : " + a));
+        
+        System.out.print("\nSender Index: ");
+        int fromIdx = Integer.parseInt(scanner.nextLine()); 
+        System.out.print("Receiver Index: ");
+        int toIdx = Integer.parseInt(scanner.nextLine());
+        
+        System.out.print("Transfer Amount: ");
+        double amt = Double.parseDouble(scanner.nextLine());
+
+        if (fromIdx < 0 || fromIdx >= accs.size() || toIdx < 0 || toIdx >= accs.size())
+            throw new InvalidInputException("Invalid index selected.");
+        
+        if (fromIdx == toIdx) throw new InvalidInputException("Source and destination cannot be the same.");
+        
+        if (amt <= 0) throw new PaymentProcessingException("Payment amount must be greater than zero.");
+        
+        service.transfer(accs.get(fromIdx), accs.get(toIdx), amt);
+        System.out.println(">> Success: Transfer completed successfully.");
+    }
+
+    private void viewHistory() {
+        System.out.println("\n--- Transaction Log (Sorted by Sender Name) ---");
+        List<com.barangay.models.Transfer> logs = service.getSortedHistory();
+        
+        if (logs.isEmpty()) {
+            System.out.println("No records found.");
+        } else {
+            logs.forEach(System.out::println);
+        }
+    }
+} 
