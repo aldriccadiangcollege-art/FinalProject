@@ -1,4 +1,4 @@
-package com.barangay.ui;
+package com.barangay.Ui;
 
 import com.barangay.models.AbstractDocumentRequest;
 import com.barangay.models.DocumentType;

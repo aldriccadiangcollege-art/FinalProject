@@ -1,4 +1,4 @@
-package com.barangay.ui;
+package com.barangay.Ui;
 
 import com.barangay.models.*;
 import com.barangay.services.TransactionService;
