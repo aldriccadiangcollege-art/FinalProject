@@ -1,15 +1,15 @@
 package com.barangay.Main;
 
 import com.barangay.models.InvalidInputException;
-import com.barangay.ui.DocumentRequestUI;
-import com.barangay.ui.GCashUI;
+import com.barangay.ui.DocumentRequest;
+import com.barangay.ui.Payment;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        DocumentRequestUI documentRequestUI = new DocumentRequestUI(scanner);
-        GCashUI gCashUI = new GCashUI(scanner);
+        DocumentRequest documentRequest = new DocumentRequest(scanner);
+        Payment paymentUI = new Payment(scanner);
 
         while (true) {
             System.out.println("\n===== BARANGAY SYSTEM MAIN MENU =====");
@@ -19,55 +19,48 @@ public class Main {
             System.out.println("4: Exit");
             System.out.print("Enter your choice: ");
 
-            try {
-                int choice = Integer.parseInt(scanner.nextLine());
+ try {
+    // Read input and parse to int
+    int choice = Integer.parseInt(scanner.nextLine());
 
-                 if (choice < 1 || choice > 4) {
-               throw new InvalidInputException("Choice must be between 1 and 4.");
-                }
-
-                switch (choice) {
-<<<<<<< HEAD
-                    case 1 -> {
-                        System.out.println("\n===== RESIDENT MODULE =====");
-                        System.out.println("resident");
-                    }
-
-                    case 2 -> {
-                        System.out.println("\n===== GCASH MODULE =====");
-                        System.out.println("gcash");
-                    }
-
-                    case 3 -> {
-                        System.out.println("\n===== DOCUMENT MODULE =====");
-=======
-                    case 1:
-                        System.out.println("You selected Option 1 - Resident");
-                        break;
-                    case 2:
-                        System.out.println("You selected Option 2 - Gcash");
-                        gCashUI.start();
-                        break;
-                    case 3:
-                        System.out.println("You selected Option 3");
-                        documentRequestUI.launch();
-                        break;
-                    case 4:
-                        System.out.println("Exiting system. Goodbye!");
-                        scanner.close(); 
-                        return; 
-                    default:
-                        System.out.println("Invalid choice. Please enter a number between 1 and 4.");
-                }
-
-            } catch (NumberFormatException e) {
-                System.out.println("Error: Please enter a valid numeric input.");
-            }catch (InvalidInputException e) 
-            {
-            System.out.println("Error: " + e.getMessage());
-            } catch (Exception e) {
-            System.out.println("An unexpected error occurred");
-            }
-        }
+    // Validation
+    if (choice < 1 || choice > 4) {
+        throw new InvalidInputException("Choice must be between 1 and 4.");
     }
+
+    // Use traditional switch statement
+    switch (choice) {
+        case 1:
+            System.out.println("\n===== RESIDENT MODULE =====");
+            System.out.println("resident");
+            break;
+        case 2:
+            System.out.println("\n===== GCASH MODULE =====");
+            System.out.println("gcash");
+            paymentUI.start();
+            break;
+        case 3:
+            System.out.println("\n===== DOCUMENT MODULE =====");
+            documentRequest.launch();
+            break;
+        case 4:
+            System.out.println("Exiting system. Goodbye!");
+            scanner.close();
+            return;
+        default:
+            // This is technically unreachable due to the if-check above,
+            // but kept as a safety practice.
+            System.out.println("Invalid choice.");
+            break;
+    }
+
+} catch (NumberFormatException e) {
+    System.out.println("Error: Please enter a valid numeric input.");
+} catch (InvalidInputException e) {
+    System.out.println("Error: " + e.getMessage());
+} catch (Exception e) {
+    System.out.println("An unexpected error occurred: " + e.getMessage());
+}
+}
+}
 }
