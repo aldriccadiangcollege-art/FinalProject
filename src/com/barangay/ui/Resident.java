@@ -6,7 +6,7 @@ import java.util.Scanner;
 import com.barangay.models.*;
 import java.time.LocalDate;
 
-public class ResidentUI {
+public class Resident {
     private Scanner sc = new Scanner(System.in);
 
     public void ResidentUIMenu(){
