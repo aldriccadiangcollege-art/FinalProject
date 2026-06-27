@@ -17,7 +17,7 @@ public class Main {
         while (true) {
             System.out.println("\n===== BARANGAY SYSTEM MAIN MENU =====");
             System.out.println("1: Option 1 - Resident");
-            System.out.println("2: Option 2 - Gcash");
+            System.out.println("2: Option 2 - Payment System");
             System.out.println("3: Option 3 - Document Request");
             System.out.println("4: Exit");
             System.out.print("Enter your choice: ");
