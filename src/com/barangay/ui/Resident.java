@@ -1,10 +1,11 @@
 package com.barangay.ui;
 
+import com.barangay.models.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import com.barangay.models.*;
-import java.time.LocalDate;
 
 public class Resident {
     private Scanner sc = new Scanner(System.in);
@@ -18,7 +19,7 @@ public class Resident {
             System.out.print("Please select an option: ");
 
             try {
-                int choice = Integer.parseInt(scanner.nextLine());
+                int choice = Integer.parseInt(sc.nextLine());
 
                 switch (choice) {
                     case 1:
@@ -41,94 +42,94 @@ public class Resident {
         }
     }
 
-    
-    //registration
-    public Resident registerResident(){
-        System.out.println("First Name: ");
-        String firstName = sc.nextLine();
 
-        System.out.println("Last Name: ");
-        String lastName = sc.nextLine();
-        residentName name = new residentName(firstName, lastName);
+    class Resident {
+        private String firstName;
+        private String lastName;
+        private LocalDate birthdate;
+        private String gender;
 
-        System.out.println("Birthdate: ");
-        LocalDate birthdate = LocalDate.parse(sc.nextLine());
-        residentBirthDate birth = new residentBirthDate(birthdate);
-        residentBdate bDate = new residentBDate(birth);
-
-        System.out.print("Gender (M/F/X): ");
-        String genderInput = sc.nextLine();
-        ResidentGender gender;
-        switch (genderInput.toUpperCase()){
-            case "M": gender = new Male(); break;
-            case "F": gender = new Female(); break; 
-            default: gender = new PreferNotToSay(); break; 
+        public Resident(String firstName, String lastName, LocalDate birthdate, String gender) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.birthdate = birthdate;
+            this.gender = gender;
         }
-        
-        System.out.println("Resident: " + name.getFirstName() + " " + name.getlastName() +
-        ", Birthday" + bDate.getResidentBirthDay() + 
-        ", Gender: " + gender.getResidentGender());
-        return null;
-        
-    }
-    
-    
-}
 
+        public String getFullName() {
+            return firstName + " " + lastName;
+        }
 
+        public LocalDate getBirthdate() {
+            return birthdate;
+        }
 
-public class RegistrationSystem {
-    private List<residentName> residents = new ArrayList<>();
-
-    // Add a resident
-    public void registerResident(residentName name) {
-        residents.add(name);
+        public String getGender() {
+            return gender;
+        }
     }
 
-    // Search by first + last name
-    public residentName searchByName(String firstName, String lastName) {
-        for (residentName r : residents) {
-            if (r.getFirstName().equalsIgnoreCase(firstName) &&
-                r.getlastName().equalsIgnoreCase(lastName)) {
-                return r;
+    // --- DIP + ISP: InputProvider interface abstracts input source ---
+    interface InputProvider {
+        String getInput(String prompt);
+    }
+
+    // --- Concrete implementation for console input ---
+    class ConsoleInputProvider implements InputProvider {
+        private Scanner sc = new Scanner(System.in);
+
+        @Override
+        public String getInput(String prompt) {
+            System.out.print(prompt);
+            return sc.nextLine();
+        }
+    }
+
+    // --- SRP: Handles resident registration logic ---
+    class ResidentRegistrar {
+        private InputProvider inputProvider;
+        private List<Resident> residents = new ArrayList<>();
+
+        public ResidentRegistrar(InputProvider inputProvider) {
+            this.inputProvider = inputProvider;
+        }
+
+        public void registerResident() {
+            String firstName = inputProvider.getInput("First Name: ");
+            String lastName = inputProvider.getInput("Last Name: ");
+
+            LocalDate birthdate;
+            try {
+                birthdate = LocalDate.parse(inputProvider.getInput("Birthdate (YYYY-MM-DD): "));
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date format. Use YYYY-MM-DD.");
+                return;
+            }
+
+            String genderInput = inputProvider.getInput("Gender (M/F/X): ");
+
+            Resident r = new Resident(firstName, lastName, birthdate, genderInput.toUpperCase());
+            residents.add(r);
+
+            System.out.println("Resident registered: " + r.getFullName());
+        }
+
+        public List<Resident> getResidents() {
+            return residents;
+        }
+    }
+
+    // --- SRP: Handles viewing residents ---
+    class ResidentViewer {
+        public void viewNames(List<Resident> residents) {
+            System.out.println("\nAll registered names:");
+            for (Resident r : residents) {
+                System.out.println(r.getFullName());
             }
         }
-        return null; // not found
     }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        RegistrationSystem system = new RegistrationSystem();
 
-        System.out.print("How many residents to register? ");
-        int count = sc.nextInt();
-        sc.nextLine(); // consume newline
 
-        for (int i = 0; i < count; i++) {
-            System.out.print("First Name: ");
-            String firstName = sc.nextLine();
-            System.out.print("Last Name: ");
-            String lastName = sc.nextLine();
 
-            residentName name = new residentName(firstName, lastName);
-            system.registerResident(name);
-        }
-
-        // Search
-        System.out.print("\nEnter name to search (First Last): ");
-        String[] searchInput = sc.nextLine().split(" ");
-        residentName found = system.searchByName(searchInput[0], searchInput[1]);
-
-        if (found != null) {
-            System.out.println("Resident found: " + found.getFirstName() + " " + found.getlastName());
-        } else {
-            System.out.println("Resident not found.");
-        }
-
-        sc.close();
-    }
 }
-
-    
-
-
