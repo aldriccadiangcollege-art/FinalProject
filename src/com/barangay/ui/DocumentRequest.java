@@ -1,4 +1,4 @@
-package com.barangay.Ui;
+package com.barangay.ui;
 
 import com.barangay.models.AbstractDocumentRequest;
 import com.barangay.models.DocumentType;
@@ -9,11 +9,11 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
-public class DocumentRequestUI {
+public class DocumentRequest {
     private final Scanner scanner;
     private final DocumentRequestService requestService;
 
-    public DocumentRequestUI(Scanner scanner) {
+    public DocumentRequest(Scanner scanner) {
         this.scanner = scanner;
         this.requestService = new DocumentRequestService();
     }
