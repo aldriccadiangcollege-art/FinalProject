@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         DocumentRequest documentRequest = new DocumentRequest(scanner);
-        Payment paymentUI = new Payment(scanner);
+        Payment payment = new Payment(scanner);
 
         while (true) {
             System.out.println("\n===== BARANGAY SYSTEM MAIN MENU =====");
@@ -20,27 +20,21 @@ public class Main {
             System.out.print("Enter your choice: ");
 
  try {
-    // Read input and parse to int
     int choice = Integer.parseInt(scanner.nextLine());
 
-    // Validation
     if (choice < 1 || choice > 4) {
         throw new InvalidInputException("Choice must be between 1 and 4.");
     }
 
-    // Use traditional switch statement
     switch (choice) {
         case 1:
-            System.out.println("\n===== RESIDENT MODULE =====");
-            System.out.println("resident");
+
             break;
         case 2:
-            System.out.println("\n===== GCASH MODULE =====");
-            System.out.println("gcash");
-            paymentUI.start();
+
+            payment.start();
             break;
         case 3:
-            System.out.println("\n===== DOCUMENT MODULE =====");
             documentRequest.launch();
             break;
         case 4:
@@ -48,8 +42,6 @@ public class Main {
             scanner.close();
             return;
         default:
-            // This is technically unreachable due to the if-check above,
-            // but kept as a safety practice.
             System.out.println("Invalid choice.");
             break;
     }
