@@ -7,7 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+<<<<<<< HEAD
 public class Resident {
+=======
+public class ResidentUI {
+>>>>>>> 404cd084c09f157e270385cf819aadafb10f1e88
     private Scanner sc = new Scanner(System.in);
 
     public void ResidentUIMenu(){
@@ -69,12 +73,20 @@ public class Resident {
         }
     }
 
+<<<<<<< HEAD
     // --- DIP + ISP: InputProvider interface abstracts input source ---
+=======
+
+>>>>>>> 404cd084c09f157e270385cf819aadafb10f1e88
     interface InputProvider {
         String getInput(String prompt);
     }
 
+<<<<<<< HEAD
     // --- Concrete implementation for console input ---
+=======
+
+>>>>>>> 404cd084c09f157e270385cf819aadafb10f1e88
     class ConsoleInputProvider implements InputProvider {
         private Scanner sc = new Scanner(System.in);
 
@@ -85,7 +97,11 @@ public class Resident {
         }
     }
 
+<<<<<<< HEAD
     // --- SRP: Handles resident registration logic ---
+=======
+
+>>>>>>> 404cd084c09f157e270385cf819aadafb10f1e88
     class ResidentRegistrar {
         private InputProvider inputProvider;
         private List<Resident> residents = new ArrayList<>();
@@ -119,7 +135,11 @@ public class Resident {
         }
     }
 
+<<<<<<< HEAD
     // --- SRP: Handles viewing residents ---
+=======
+
+>>>>>>> 404cd084c09f157e270385cf819aadafb10f1e88
     class ResidentViewer {
         public void viewNames(List<Resident> residents) {
             System.out.println("\nAll registered names:");
