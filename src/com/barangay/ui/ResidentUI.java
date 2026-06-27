@@ -1,5 +1,7 @@
 package com.barangay.ui;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.barangay.models.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -64,8 +66,9 @@ public class ResidentUI {
     }
 }
 
-    
+public class sortResidentName{
+    Scanner sc = new Scanner(System.in);
+    List<String> names = new ArrayList<>();
 
-    
-
-
+    System.out.print
+}
