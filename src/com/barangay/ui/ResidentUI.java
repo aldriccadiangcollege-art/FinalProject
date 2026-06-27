@@ -107,7 +107,7 @@ public class ResidentUI {
 
             LocalDate birthdate;
             try {
-                birthdate = LocalDate.parse(inputProvider.getInput("Birthdate (DD-MM-YYYY): "));
+                birthdate = LocalDate.parse(inputProvider.getInput("Birthdate (YYYY-MM-DD): "));
             } catch (DateTimeParseException e) {
                 System.out.println("Invalid date format. Use YYYY-MM-DD.");
                 return;
