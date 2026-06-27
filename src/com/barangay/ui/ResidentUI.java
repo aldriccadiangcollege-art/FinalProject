@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 import com.barangay.models.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class ResidentUI {
     private Scanner sc = new Scanner(System.in);
@@ -43,58 +44,61 @@ public class ResidentUI {
 
     
     //registration
-    public Resident registerResident(){
-        System.out.println("First Name: ");
+
+    private Scanner sc = new Scanner(System.in);
+
+    public void residentUIMenu() {
+        while (true) {
+            System.out.println("\n--- Residents ---");
+            System.out.println("1. Add resident");
+            System.out.println("2. Find Resident");
+            System.out.println("3. Exit");
+            System.out.print("Please select an option: ");
+
+            try {
+                int choice = Integer.parseInt(sc.nextLine());
+
+                switch (choice) {
+                    case 1:
+                        registerResident();
+                        break;
+                    case 2:
+                        System.out.println("Feature coming soon.");
+                        break;
+                    case 3:
+                        return;
+                    default:
+                        System.out.println("Invalid choice! Please select 1, 2, or 3.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Input must be a valid number!");
+            }
+        }
+    }
+
+    public void registerResident() {
+        System.out.print("First Name: ");
         String firstName = sc.nextLine();
-
-        System.out.println("Last Name: ");
+        System.out.print("Last Name: ");
         String lastName = sc.nextLine();
-        residentName name = new residentName(firstName, lastName);
-
-        System.out.println("Birthdate: ");
-        LocalDate birthdate = LocalDate.parse(sc.nextLine());
-        residentBirthDate birth = new residentBirthDate(birthdate);
-        residentBdate bDate = new residentBDate(birth);
+        
+        System.out.print("Birthdate (YYYY-MM-DD): ");
+        LocalDate birthdate;
+        try {
+            birthdate = LocalDate.parse(sc.nextLine());
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid date format. Use YYYY-MM-DD.");
+            return;
+        }
 
         System.out.print("Gender (M/F/X): ");
         String genderInput = sc.nextLine();
-        ResidentGender gender;
-        switch (genderInput.toUpperCase()){
-            case "M": gender = new Male(); break;
-            case "F": gender = new Female(); break; 
-            default: gender = new PreferNotToSay(); break; 
-        }
         
-        System.out.println("Resident: " + name.getFirstName() + " " + name.getlastName() +
-        ", Birthday" + bDate.getResidentBirthDay() + 
-        ", Gender: " + gender.getResidentGender());
-        return null;
-        
+        // Assuming your models exist and match these types
+        System.out.println("Resident registered: " + firstName + " " + lastName + 
+                           ", Born: " + birthdate + ", Gender: " + genderInput.toUpperCase());
     }
-    
-    
 }
-
-
-
-public class RegistrationSystem {
-    private List<residentName> residents = new ArrayList<>();
-
-    // Add a resident
-    public void registerResident(residentName name) {
-        residents.add(name);
-    }
-
-    // Search by first + last name
-    public residentName searchByName(String firstName, String lastName) {
-        for (residentName r : residents) {
-            if (r.getFirstName().equalsIgnoreCase(firstName) &&
-                r.getlastName().equalsIgnoreCase(lastName)) {
-                return r;
-            }
-        }
-        return null; // not found
-    }
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
